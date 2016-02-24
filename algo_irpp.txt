@@ -1,0 +1,75 @@
+def Convertion_Base_to_Net(self, cr, uid, salaire_base, context=None):
+        
+        indemnites=0
+        deduction=0
+        salaire_brute=salaire_base + indemnites- deduction
+        
+        CNSS=salaire_brute*9.18/100
+        
+        assurance_maladie_retraite=salaire_brute*0.75
+        
+        IRPP=0
+        
+        salaire_imposabale=salaire_brute-CNSS
+
+        revenue_annuel=salaire_imposabale*12
+
+        frais_professsionnel=0.0
+        if revenue_annuel>5000:
+            frais_professsionnel=revenue_annuel*0.1
+        revenue_annuel=revenue_annuel-frais_professsionnel
+        impot_sur_revenue=0.0
+       
+       
+        if revenue_annuel<=1500:
+            impot_sur_revenue=0.0
+        if revenue_annuel>1500:
+            """and revenue_annuel<= 5000"""
+            print "tranche T1"
+            if revenue_annuel>=5000:
+                t1=5000-1500
+                impot_sur_revenue+=t1*15/100
+                print t1
+            else:
+                t1=revenue_annuel-1500
+                impot_sur_revenue+=t1*15/100
+
+            print "Tranche T2"
+            if revenue_annuel>10000:
+                t2=10000-5000
+                impot_sur_revenue+=t2*20/100
+            elif revenue_annuel>= 5000:
+                t2=revenue_annuel-5000
+                impot_sur_revenue+=t2*20/100
+            
+            print "tranche T3"
+            if revenue_annuel>20000:
+                t3=20000-10000
+                impot_sur_revenue+=t3*25/100
+            elif revenue_annuel>= 10000:
+                t3=revenue_annuel-10000
+                impot_sur_revenue+=t3*25/100
+            
+            print "tranche T4"
+            if revenue_annuel>50000:
+                t4=50000-20000
+                impot_sur_revenue+=t4*30/100
+            elif revenue_annuel>= 20000:
+                t4=revenue_annuel-20000
+                impot_sur_revenue+=t4*30/100
+            
+            print "tranche T5"
+            if revenue_annuel>50000:
+                t5=50000-20000
+                impot_sur_revenue+=t5*35/100
+            elif revenue_annuel>= 20000:
+                t5=revenue_annuel-20000
+                impot_sur_revenue+=t5*35/100
+                   
+        IRPP=impot_sur_revenue/12
+        retenues=IRPP
+        salaire_net=salaire_imposabale - retenues
+        
+        return salaire_net
+
+
